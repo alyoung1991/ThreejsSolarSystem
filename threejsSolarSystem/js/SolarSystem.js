@@ -2,18 +2,14 @@
     var scene;
     var camera;
     var projector;
-
     var clock = new THREE.Clock();
     var cameraControls;
     var spotLight;
-    var smsh;
-    var mars;
-    var score = 0;
 
     <!-- add objects in the scope so all methods can access -->
     var mercGroundPlane, earthGroundPlane, venusGroundPlane, marsGroundPlane, jupiterGroundPlane, saturnGroundPlane, uranusGroundPlane, neptuneGroundPlane, plutoGroundPlane;
     var cloudMesh;
-    var ball;
+    var sun;
 
 	<!-- 3. Add the following two lines. -->
 	Physijs.scripts.worker = 'libs/physijs_worker.js';
@@ -21,7 +17,6 @@
 	
 	function init()
 	{
-		<!-- 4. Edit the scene creation -->
 		scene = new Physijs.Scene();
 		scene.setGravity(new THREE.Vector3( 0, 0, -30 ));
         
@@ -76,8 +71,7 @@
             time: 			{ type: "f", value: 1.0 }
         };
 
-        // create custom material from the shader code above
-        //   that is within specially labeled script tags
+        // create custom material from the shader code
         var customMaterial = new THREE.ShaderMaterial( 
         {
             uniforms: customUniforms,
@@ -85,24 +79,18 @@
             fragmentShader: document.getElementById( 'fragmentShader' ).textContent
         }   );
 
-        var ballGeometry = new THREE.SphereGeometry( 55, 64, 64 );
-        var ball = new THREE.Mesh(	ballGeometry, customMaterial );
+        var sunGeometry = new THREE.SphereGeometry( 55, 64, 64 );
+        var sun = new THREE.Mesh(	sunGeometry, customMaterial );
         
-        scene.add( ball );
+        scene.add( sun );
         
-        <!-- 5. Ground plane -->
-		createGroundPlane();
+		createOrbitPlane();
 		
         addSpotLight();
         loadSounds();
         music.play();
 		
-		<!-- 14. Create target -->
-		createTarget();
-        
-        //createText();
-        
-        //updateScore(score);
+		createPlanets();
 	
         cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
         cameraControls.target.set( 0, 0, 0);
@@ -119,12 +107,9 @@
 	
 	function render()
 	{   
-        rotateEarth();
+        rotatePlanets();
         
-        //updateScore(score);
-		<!-- 6. Physics simulation -->
 		scene.simulate();
-
         
 		// Request animation frame
 		requestAnimationFrame( render );
@@ -135,7 +120,7 @@
 	}
 	
 	<!-- 5. Ground plane -->
-	function createGroundPlane()
+	function createOrbitPlane()
 	{	    
 		var planeMaterial = new Physijs.createMaterial(new THREE.MeshBasicMaterial({color: 'white'}), .4, .8 );
         var planeGeometry = new THREE.SphereGeometry(1);
@@ -190,7 +175,7 @@
 
 	<!-- 14. Create target -->
 	var targetlist;
-	function createTarget()
+	function createPlanets()
 	{
         createOrbits();
         
@@ -412,94 +397,6 @@
         
     }
 
-    function createText()
-    {
-        var loader = new THREE.FontLoader();
-        loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
-
-            var textGeo = new THREE.TextGeometry( "MARS ATTACK!", {
-                font: font,
-                size: 18,
-                height: 4,
-                curveSegments: 12
-            });
-            
-            var textGeo2 = new THREE.TextGeometry( "Use WASD Keys to Aim, F to Fire, L to Reload", {
-                font: font,
-                size: 5,
-                height: 1,
-                curveSegments: 12
-            });
-            
-            var textGeo3 = new THREE.TextGeometry( "Alberto Young", {
-                font: font,
-                size: 5,
-                height: 1,
-                curveSegments: 12
-            });
-            
-            var textGeo4 = new THREE.TextGeometry( "Move Camera With Mouse", {
-                font: font,
-                size: 5,
-                height: 1,
-                curveSegments: 12
-            });
-
-            textGeo.computeBoundingBox();
-            textGeo2.computeBoundingBox();
-            textGeo3.computeBoundingBox();
-            textGeo4.computeBoundingBox();
-
-            var centerOffset = -0.5 * ( textGeo.boundingBox.max.x - textGeo.boundingBox.min.x );
-            var centerOffset2 = -0.5 * ( textGeo2.boundingBox.max.x - textGeo2.boundingBox.min.x );
-            var centerOffset3 = -0.5 * ( textGeo3.boundingBox.max.x - textGeo3.boundingBox.min.x );
-            var centerOffset4 = -0.5 * ( textGeo4.boundingBox.max.x - textGeo4.boundingBox.min.x );
-
-            
-            var textMaterial = new THREE.MeshPhongMaterial( { color: 'yellow', specular: 0xffffff } );
-
-            var mesh = new THREE.Mesh( textGeo, textMaterial );
-            mesh.position.x = centerOffset;
-            mesh.position.y = 100;
-            mesh.rotation.x = 10 * Math.PI / 180;
-
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-            scene.add( mesh );
-            
-            var mesh2 = new THREE.Mesh( textGeo2, textMaterial );
-            mesh2.position.x = centerOffset2;
-            mesh2.position.y = 65;
-            mesh2.rotation.x = 10 * Math.PI / 180;
-
-            mesh2.castShadow = true;
-            mesh2.receiveShadow = true;
-
-            scene.add( mesh2 );
-            
-            var mesh3 = new THREE.Mesh( textGeo3, textMaterial );
-            mesh3.position.x = centerOffset3;
-            mesh3.position.y = 85;
-            mesh3.rotation.x = 10 * Math.PI / 180;
-
-            mesh3.castShadow = true;
-            mesh3.receiveShadow = true;
-
-            scene.add( mesh3 );
-            
-            var mesh4 = new THREE.Mesh( textGeo4, textMaterial );
-            mesh4.position.x = centerOffset4;
-            mesh4.position.y = 75;
-            mesh4.rotation.x = 10 * Math.PI / 180;
-
-            mesh4.castShadow = true;
-            mesh4.receiveShadow = true;
-
-            scene.add( mesh4 );
-        } );
-    }
-
     function update()
     {
         var delta = clock.getDelta();
@@ -510,40 +407,6 @@
     {
         requestAnimationFrame( animate );	
         update();
-    }
-
-    var newScore;
-    function updateScore(x)
-    {
-        if( x != 0)
-        {
-            //scene.remove(newScore)    
-        }
-        var loader = new THREE.FontLoader();
-        loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
-
-            var textGeo = new THREE.TextBufferGeometry( 'Score: ' + x, {
-
-                font: font,
-
-                size: 10,
-                height: 1,
-                curveSegments: 12
-
-            });
-
-            var textMaterial = new THREE.MeshPhongMaterial( { color: 'yellow', specular: 0xffffff } );
-
-            var playerScore = new THREE.Mesh( textGeo, textMaterial );
-            playerScore.position.x = -120;
-            playerScore.position.y = 20;
-            playerScore.position.z = 20;
-            playerScore.rotation.x = 10 * Math.PI / 180;
-            //scene.add( playerScore );
-                
-            newScore = playerScore;
-
-        } );
     }
 	
 	function setupCamera()
@@ -584,7 +447,7 @@
         mercGroundPlane.add(sunLight);
 	}
 	
-    function rotateEarth()
+    function rotatePlanets()
     {   
         mercGroundPlane.rotation.y += .004;
         venusGroundPlane.rotation.y += .003;
@@ -602,7 +465,6 @@
         earth.rotation.y += .005;
         mars.rotation.z += .004;
         jupiter.rotation.y -= .005;
-        //saturn.rotation.y += .005;
         uranus.rotation.y += .004;
         neptune.rotation.y += .006;
     }
@@ -644,10 +506,9 @@
 
     }
 
-    var zap, music;
+    var music;
     function loadSounds()
     {
-        zap = new Audio("sounds/zap.mp3");
         music = new Audio("sounds/gambino.mp3");
     }
 
