@@ -2,16 +2,13 @@
     var scene;
     var camera;
     var projector;
-    var clock = new THREE.Clock();
     var cameraControls;
     var spotLight;
-
-    <!-- add objects in the scope so all methods can access -->
-    var mercGroundPlane, earthGroundPlane, venusGroundPlane, marsGroundPlane, jupiterGroundPlane, saturnGroundPlane, uranusGroundPlane, neptuneGroundPlane, plutoGroundPlane;
     var cloudMesh;
     var sun;
+    var clock = new THREE.Clock();
+    var mercGroundPlane, earthGroundPlane, venusGroundPlane, marsGroundPlane, jupiterGroundPlane, saturnGroundPlane, uranusGroundPlane, neptuneGroundPlane, plutoGroundPlane;
 
-	<!-- 3. Add the following two lines. -->
 	Physijs.scripts.worker = 'libs/physijs_worker.js';
     Physijs.scripts.ammo = 'ammo.js';
 	
@@ -509,7 +506,8 @@
     var music;
     function loadSounds()
     {
-        music = new Audio("sounds/gambino.mp3");
+        music = new Audio("sounds/space.mp3");
+        music.volume = .10;
     }
 
 	window.onload = init;
