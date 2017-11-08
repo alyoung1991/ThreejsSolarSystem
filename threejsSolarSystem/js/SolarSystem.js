@@ -1,6 +1,7 @@
     var renderer;
     var scene;
     var camera;
+	var cameraPosition = 1;
     var projector;
     var cameraControls;
     var spotLight;
@@ -18,6 +19,7 @@
 		scene.setGravity(new THREE.Vector3( 0, 0, -30 ));
         
 		setupCamera();
+        
 		setupRenderer();
 		
         // base image texture for mesh
@@ -108,12 +110,13 @@
         
 		scene.simulate();
         
+        updateCamera();
+        
 		// Request animation frame
 		requestAnimationFrame( render );
         
 		// Call render()
 		renderer.render( scene, camera );
-        
 	}
 	
 	<!-- 5. Ground plane -->
@@ -222,6 +225,16 @@
 		
 		earthGroundPlane.add( earth );
         
+        var anchorGeometry = new THREE.SphereGeometry( .5);
+		var anchorMaterial = new Physijs.createMaterial( new THREE.MeshLambertMaterial({color:'white'}), .95, .95 );
+		anchor = new Physijs.SphereMesh( anchorGeometry, anchorMaterial , 1);
+        anchor.position.x = 0;
+		anchor.position.y = 0;
+		anchor.position.z = 100;
+		
+		earthGroundPlane.add( anchor );
+        
+        
         var moonTexture = THREE.ImageUtils.loadTexture('images/moonmap1k.jpg');
         
         var moonGeometry = new THREE.SphereGeometry( .3, 32, 32 );
@@ -280,21 +293,21 @@
 		saturn.position.z = 200;
 		saturn.name = "SaturnBall";
 		
-        var saturnRingTexture = THREE.ImageUtils.loadTexture('images/saturnringcolor.jpg');
-        var saturnRingGeometry = new THREE.RingGeometry(10, 17, 32, 1);
+        var saturnRingTexture = THREE.ImageUtils.loadTexture('images/saturnRing.png');
+        var saturnRing1Geometry = new THREE.RingGeometry(8.6, 20, 32, 1);
         var saturnRingMaterial = new Physijs.createMaterial( new THREE.MeshLambertMaterial(
                     {
                     map:saturnRingTexture, 
-                    opacity: 0.55, 
+                    opacity: 0.40, 
                     transparent : true
                     }), .95, .95 );
-        saturnRing = new Physijs.SphereMesh (saturnRingGeometry, saturnRingMaterial, 0);
-        saturnRing.position.x = 0;
-        saturnRing.position.z = 0;
-        saturnRing.rotation.x = 220 * Math.PI / 180;
+        saturnRing1 = new Physijs.SphereMesh (saturnRing1Geometry, saturnRingMaterial, 0);
+        saturnRing1.position.x = 0;
+        saturnRing1.position.z = 0;
+        saturnRing1.rotation.x = 240 * Math.PI / 180;
         
 		saturnGroundPlane.add( saturn );
-        saturn.add( saturnRing );
+        saturn.add( saturnRing1 );
         
         
         var uranusTexture = THREE.ImageUtils.loadTexture('images/uranusmap.jpg');
@@ -415,6 +428,92 @@
         
 		camera.lookAt( scene.position );
 	}
+
+    function updateCamera()
+    {
+        if(Key.isDown(Key.ONE))
+		{
+			cameraPosition = 1;
+		}
+        if(Key.isDown(Key.TWO))
+		{
+			cameraPosition = 2;
+		}
+		if(Key.isDown(Key.THREE))
+		{
+			cameraPosition = 3;
+		}
+		if(Key.isDown(Key.FOUR))
+		{
+			cameraPosition = 4;
+		}
+        if(Key.isDown(Key.FIVE))
+		{
+			cameraPosition = 5;
+		}
+		if(Key.isDown(Key.SIX))
+		{
+			cameraPosition = 6;
+		}
+		if(Key.isDown(Key.SEVEN))
+		{
+			cameraPosition = 7;
+		}
+        if(Key.isDown(Key.EIGHT))
+		{
+			cameraPosition = 8;
+		}
+		if(Key.isDown(Key.NINE))
+		{
+			cameraPosition = 9;
+		}
+		if(Key.isDown(Key.ZERO))
+		{
+			cameraPosition = 10;
+		}
+		
+        
+		if(cameraPosition == 1)
+		{
+            //camera.lookAt( scene.position );
+		}
+		else if(cameraPosition == 2)
+		{
+            mercury.add( camera );  
+		}
+		else if(cameraPosition == 3)
+		{
+            venus.add( camera );   
+		}
+		else if(cameraPosition == 4)
+		{
+            anchor.add( camera );   
+		}
+        else if(cameraPosition == 5)
+		{
+            mars.add( camera );   
+		}
+		else if(cameraPosition == 6)
+		{
+            jupiter.add( camera );   
+		}
+        else if(cameraPosition == 7)
+		{
+            saturn.add( camera );   
+		}
+		else if(cameraPosition == 8)
+		{
+            uranus.add( camera );   
+		}
+		else if(cameraPosition == 9)
+		{
+            neptune.add( camera );   
+		}
+        else if(cameraPosition == 10)
+		{
+            pluto.add( camera );   
+		}
+    }
 	
 	function setupRenderer()
 	{
@@ -456,11 +555,11 @@
         neptuneGroundPlane.rotation.y += .0006;
         plutoGroundPlane.rotation.y += .0004;
         cloudMesh.rotation.y += .0005;
-        cloudMesh.rotation.x += .00025;
-        mercury.rotation.x += .004;
+        cloudMesh.rotation.y += .00025;
+        mercury.rotation.y += .004;
         venus.rotation.y -= .006;
-        earth.rotation.y += .005;
-        mars.rotation.z += .004;
+        earth.rotation.y += .008;
+        mars.rotation.y += .004;
         jupiter.rotation.y -= .005;
         uranus.rotation.y += .004;
         neptune.rotation.y += .006;

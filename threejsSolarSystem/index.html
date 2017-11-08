@@ -6,14 +6,12 @@
         <script src="libs/keyboard.js"></script>
         <script src="js/Detector.js"></script>
         <script src="fonts/helvetiker_regular.typeface.json"></script>
-
         <script src="libs/physi.js"></script>
 
         <script src="js/OrbitControls.js"></script>
         
         <head>
 
-        
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -60,20 +58,7 @@
                 z-index: 1;
             }
 
-            #messages 
-            {
-                position: absolute;
-                width: 450px;
-                height: 175px;
-                margin: 15px;
-                padding: 5px 15px;
-                bottom: 0;
-                z-index: 100;
-                font-size: 14px;
-                color: #dddddd;
-            }
-
-            #credit 
+            #title 
             {
                 position: absolute;
                 width: 445px;
@@ -85,55 +70,7 @@
                 z-index: 100;
             }
             
-            #instructions 
-            {
-                position: absolute;
-                width: 445px;
-                height: 160px;
-                margin: 15px;
-                padding: 5px 15px;
-                top:0;
-                right:0;
-                z-index: 100;
-            }
             
-            #cardValues
-            {
-                position: absolute;
-                width: 240px;
-                height: 300px;
-                margin: 15px;
-                padding: 5px 15px;
-                bottom:0;
-                right:0;
-                z-index: 100;
-            }
-
-            #wildSelect 
-            {
-                text-align: center;
-                width: 500px;
-                height: 50px;
-                position: absolute;
-                left: 50%;
-                margin-left: -250px;
-                bottom: 60px;
-                z-index: 100;
-            }
-
-            #cardsleft 
-            {
-                text-align: center;
-                width: 500px;
-                height: 50px;
-                position: absolute;
-                left: 50%;
-                margin-left: -250px;
-                top: 60px;
-                z-index: 100;
-                font-size: 16px;
-            }
-
             h1 
             {
                 margin: 4px;
@@ -165,19 +102,14 @@
 
     <body>
 
-        <div id="messages">
-        </div>
-
-        <div id="credit">
+        <div id="title">
             <h1>ThreeJS Solar System</h1>
-            <h4>Mouse Controls:</h4>
+            <h4>Camera Controls:</h4>
+                <li>Press 0-9 to change planet focus</li>
                 <li>Left Click and Drag to move camera around the sun</li>
                 <li>Right Click and Drag to move camera manually</li>
                 <li>Scroll to adjust zoom</li>
-            
-            <h6>** Planet distance not to scale</h6>
         </div>
-        
 
     <body>
         <script src="js/SolarSystem.js"></script>
