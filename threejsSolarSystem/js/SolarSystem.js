@@ -556,15 +556,15 @@
         uranusGroundPlane.rotation.y += .0008;
         neptuneGroundPlane.rotation.y += .0006;
         plutoGroundPlane.rotation.y += .0004;
-        cloudMesh.rotation.y += .0005;
+        cloudMesh.rotation.x += .0005;
         cloudMesh.rotation.y += .00025;
-        mercury.rotation.y += .004;
-        venus.rotation.y -= .006;
-        earth.rotation.y += .008;
-        mars.rotation.y += .004;
-        jupiter.rotation.y -= .005;
-        uranus.rotation.y += .004;
-        neptune.rotation.y += .006;
+        mercury.rotation.y += .002;
+        venus.rotation.y -= .003;
+        earth.rotation.y += .003;
+        mars.rotation.y += .002;
+        jupiter.rotation.y -= .002;
+        uranus.rotation.y += .002;
+        neptune.rotation.y += .002;
     }
 
     function onDocumentMouseMove( event ) {
@@ -608,7 +608,7 @@
     function loadSounds()
     {
         music = new Audio("sounds/space.mp3");
-        music.volume = .10;
+        music.volume = .05;
     }
 
 	window.onload = init;
